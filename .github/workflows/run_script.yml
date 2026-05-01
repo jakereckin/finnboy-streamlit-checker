@@ -2,7 +2,7 @@ name: Run Site Check Script
 
 on:
   schedule:
-    - cron: "0 11 * * *"
+    - cron: "0 * * * *"
   workflow_dispatch: 
 
 jobs:
@@ -26,6 +26,14 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json', '**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
 
       - name: Install Playwright browsers
         run: |
