@@ -1,4 +1,4 @@
-name: Run Python Script
+name: Run Site Check Script
 
 on:
   schedule:
@@ -10,12 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      API_KEY: ${{ secrets.API_KEY }}   # inject your secret
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      GARMIN_EMAIL: ${{ secrets.GARMIN_EMAIL }}
-      GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
-      MONGO_CLUSTER: ${{ secrets.MONGO_CLUSTER }}
-      MONGO_PATH: ${{ secrets.MONGO_PATH }}
+      NDA_GBB_SITE: ${{ secrets.NDA_GBB_SITE }}   # inject your secret
+      GOLF_SITE: ${{ secrets.GOLF_SITE }}
 
 
     steps:
