@@ -2,7 +2,7 @@ name: Run Site Check Script
 
 on:
   schedule:
-    - cron: "25 * * * *"
+    - cron: "33 * * * *"
   workflow_dispatch:
 
 jobs:
