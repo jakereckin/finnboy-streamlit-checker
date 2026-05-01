@@ -10,9 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      NDA_GBB_SITE: ${{ secrets.NDA_GBB_SITE }}   # inject your secret
+      NDA_GBB_SITE: ${{ secrets.NDA_GBB_SITE }}
       GOLF_SITE: ${{ secrets.GOLF_SITE }}
-
 
     steps:
       - name: Checkout repo
@@ -24,20 +23,18 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json', '**/requirements.txt') }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-playwright-
 
       - name: Install Playwright browsers
-        run: |
-          python -m playwright install --with-deps
+        run: python -m playwright install --with-deps
 
       - name: Run script
         run: |
