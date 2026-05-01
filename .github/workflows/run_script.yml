@@ -28,10 +28,11 @@ jobs:
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/requirements.txt') }}
+          path: /home/runner/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright
           restore-keys: |
-            ${{ runner.os }}-playwright-
+            ${{ runner.os }}-playwright
+
 
       - name: Install Playwright browsers
         run: python -m playwright install --with-deps
