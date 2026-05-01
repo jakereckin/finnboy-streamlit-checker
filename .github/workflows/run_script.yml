@@ -3,13 +3,14 @@ name: Run Site Check Script
 on:
   schedule:
     - cron: "0 * * * *"
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
 
     env:
+      XDG_CACHE_HOME: /home/runner/.cache
       NDA_GBB_SITE: ${{ secrets.NDA_GBB_SITE }}
       GOLF_SITE: ${{ secrets.GOLF_SITE }}
 
@@ -25,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Show cache before restore
+        run: ls -la /home/runner/.cache || true
+
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
@@ -33,9 +37,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-playwright
 
+      - name: Show ms-playwright after restore
+        run: ls -la /home/runner/.cache/ms-playwright || true
 
       - name: Install Playwright browsers
         run: python -m playwright install --with-deps
+
+      - name: Show ms-playwright after install
+        run: ls -la /home/runner/.cache/ms-playwright || true
 
       - name: Run script
         run: |
