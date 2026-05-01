@@ -1,11 +1,12 @@
 from playwright.sync_api import sync_playwright
-from .log import get_logger
 import logging
 import time
 import os
 
-get_logger()
-LOG = logging.getLogger()
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s"
+)
 
 HEADLESS = os.getenv('HEADLESS', 'true').lower() in ('1', 'true', 'yes')
 
@@ -19,8 +20,8 @@ def check_site(url: str) -> None:
         page = context.new_page()
         page.goto(url)
         time.sleep(10)
-        LOG.info(page.title())
-        LOG.info(f'Checking site: {url}')
+        logging.info(page.title())
+        logging.info(f'Checking site: {url}')
         page.reload()
         time.sleep(10)
         browser.close()

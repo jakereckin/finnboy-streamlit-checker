@@ -1,26 +1,8 @@
 import logging
 import time
 import os
-from pathlib import Path
-from logging.handlers import TimedRotatingFileHandler
 
-# ============================================================================
-def get_logger() -> None:
-    parent_path = Path(__file__).parent.parent.parent
-    LOG_FILE_NAME = os.path.join(parent_path, 'log/process_log.log')
-    file_handler = TimedRotatingFileHandler(
-        filename=LOG_FILE_NAME,
-        when='midnight',
-        interval=1,
-        backupCount=10
-    )
-    logging.basicConfig(
-        handlers=[file_handler], 
-        level=logging.INFO,
-        format='%(asctime)s %(message)s',
-        datefmt='%m/%d/%Y %H:%M'
-    )
-    return None
+
 
 # ============================================================================
 def timer(func):
