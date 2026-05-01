@@ -3,10 +3,11 @@ name: Run Site Check Script
 on:
   schedule:
     - cron: "*/5 * * * *"
-  workflow_dispatch:
+  workflow_dispatch: # allows manual triggering from GitHub UI
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
 
 concurrency:
   group: site-check
