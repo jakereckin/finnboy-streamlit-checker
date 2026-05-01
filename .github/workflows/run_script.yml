@@ -26,10 +26,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Show cache before restore
-        run: ls -la /home/runner/.cache || true
-
-      - name: Cache Playwright browsers
+      - name: Restore Playwright cache
         uses: actions/cache@v4
         with:
           path: /home/runner/.cache/ms-playwright
@@ -37,14 +34,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-playwright
 
-      - name: Show ms-playwright after restore
-        run: ls -la /home/runner/.cache/ms-playwright || true
+      - name: Check for Playwright browsers
+        id: pw-check
+        run: |
+          # ensure the cache dir exists
+          mkdir -p /home/runner/.cache/ms-playwright
+          # compgen returns non-zero if no matches; use it to detect any files
+          if compgen -G "/home/runner/.cache/ms-playwright/*" > /dev/null; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Install Playwright browsers
+      - name: Install Playwright browsers (only if missing)
+        if: steps.pw-check.outputs.exists == 'false'
         run: python -m playwright install --with-deps
-
-      - name: Show ms-playwright after install
-        run: ls -la /home/runner/.cache/ms-playwright || true
 
       - name: Run script
         run: |
