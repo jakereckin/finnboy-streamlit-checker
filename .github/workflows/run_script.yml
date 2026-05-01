@@ -5,12 +5,21 @@ on:
     - cron: "*/5 * * * *"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: site-check
+  cancel-in-progress: false
+
+env:
+  XDG_CACHE_HOME: /home/runner/.cache
+
 jobs:
   run-script:
     runs-on: ubuntu-latest
 
     env:
-      XDG_CACHE_HOME: /home/runner/.cache
       NDA_GBB_SITE: ${{ secrets.NDA_GBB_SITE }}
       GOLF_SITE: ${{ secrets.GOLF_SITE }}
 
@@ -26,6 +35,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Show cache root before restore
+        run: ls -la /home/runner/.cache || true
+
+      - name: Show ms-playwright before restore
+        run: ls -la /home/runner/.cache/ms-playwright || true
+
       - name: Restore Playwright cache
         uses: actions/cache@v4
         with:
@@ -34,12 +49,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-playwright
 
+      - name: Show ms-playwright after restore
+        run: ls -la /home/runner/.cache/ms-playwright || true
+
       - name: Check for Playwright browsers
         id: pw-check
         run: |
-          # ensure the cache dir exists
           mkdir -p /home/runner/.cache/ms-playwright
-          # compgen returns non-zero if no matches; use it to detect any files
           if compgen -G "/home/runner/.cache/ms-playwright/*" > /dev/null; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
@@ -49,6 +65,9 @@ jobs:
       - name: Install Playwright browsers (only if missing)
         if: steps.pw-check.outputs.exists == 'false'
         run: python -m playwright install --with-deps
+
+      - name: Show ms-playwright after install
+        run: ls -la /home/runner/.cache/ms-playwright || true
 
       - name: Run script
         run: |
