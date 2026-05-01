@@ -3,6 +3,7 @@ name: Run Site Check Script
 on:
   schedule:
     - cron: "*/5 * * * *"
+      timezone: "America/Chicago"
   workflow_dispatch: # allows manual triggering from GitHub UI
 
 permissions:
