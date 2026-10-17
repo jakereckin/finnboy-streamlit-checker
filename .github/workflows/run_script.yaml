@@ -2,7 +2,7 @@ name: Run Site Check Script
 
 on:
   schedule:
-    - cron: "34 * * * *"
+    - cron: "*/10 * * * *"
       timezone: "America/Chicago"
   push:
     branches:
