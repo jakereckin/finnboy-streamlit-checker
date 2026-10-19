@@ -1,7 +1,9 @@
 from playwright.sync_api import sync_playwright
+import sqlitecloud
 import logging
 import time
 import os
+from typing import Optional
 
 logging.basicConfig(
     level=logging.INFO,
@@ -26,3 +28,17 @@ def check_site(url: str) -> None:
         time.sleep(10)
         browser.close()
     return None
+
+
+def check_database(connection: Optional[str], database_name: str) -> None:
+    """Runs a read-only connectivity query against a SQLiteCloud database."""
+    if not connection:
+        raise ValueError(f'Missing connection string for {database_name}')
+
+    with sqlitecloud.connect(connection) as conn:
+        result = conn.execute('SELECT 1').fetchone()
+
+    if result is None or result[0] != 1:
+        raise RuntimeError(f'Connectivity query returned an unexpected result for {database_name}')
+
+    logging.info('Database query succeeded: %s', database_name)

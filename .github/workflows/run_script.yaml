@@ -2,7 +2,7 @@ name: Run Site Check Script
 
 on:
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "13 * * * *"
       timezone: "America/Chicago"
   push:
     branches:
@@ -27,6 +27,8 @@ jobs:
     env:
       NDA_GBB_SITE: ${{ secrets.NDA_GBB_SITE }}
       GOLF_SITE: ${{ secrets.GOLF_SITE }}
+      NDA_GBB_DB_CONNECTION: ${{ secrets.NDA_GBB_DB_CONNECTION }}
+      GOLF_DB_CONNECTION: ${{ secrets.GOLF_DB_CONNECTION }}
 
     steps:
       - name: Checkout repo
