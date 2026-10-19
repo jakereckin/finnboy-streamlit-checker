@@ -34,6 +34,7 @@ def check_database(connection: Optional[str], database_name: str) -> None:
     """Runs a read-only connectivity query against a SQLiteCloud database."""
     if not connection:
         raise ValueError(f'Missing connection string for {database_name}')
+    logging.info(f'Checking database connectivity: {database_name}')
 
     with sqlitecloud.connect(connection) as conn:
         result = conn.execute('SELECT 1').fetchone()
