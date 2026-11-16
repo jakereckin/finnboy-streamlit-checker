@@ -20,6 +20,11 @@ def main() -> None:
             connection=os.getenv('GOLF_DB_CONNECTION'),
             database_name='Golf',
         )),
+        ('Habit Tracker site', lambda: check_site.check_site(url=os.getenv('HABIT_TRACKER_SITE'))),
+        ('Habit Tracker database', lambda: check_site.check_database(
+            connection=os.getenv('HABIT_TRACKER_DB_CONNECTION'),
+            database_name='Habit Tracker',
+        )),
     )
     failed_checks = []
     try:
