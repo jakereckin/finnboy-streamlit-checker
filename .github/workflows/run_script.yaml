@@ -29,7 +29,9 @@ jobs:
       GOLF_SITE: ${{ secrets.GOLF_SITE }}
       NDA_GBB_DB_CONNECTION: ${{ secrets.NDA_GBB_DB_CONNECTION }}
       GOLF_DB_CONNECTION: ${{ secrets.GOLF_DB_CONNECTION }}
-
+      HABIT_TRACKER_DB_CONNECTION: ${{ secrets.HABIT_TRACKER_DB_CONNECTION }}
+      HABIT_TRACKER_SITE: ${{ secrets.HABIT_TRACKER_SITE }}
+      
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
